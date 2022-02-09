@@ -1,7 +1,10 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import styled from 'styled-components'
-import logo from "../../assets/logo.png"
-import { FormControl, Button, TextField } from "@mui/material"
+import { Button, TextField, Alert, Snackbar } from "@mui/material"
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from '../../store';
+import { authorization } from "../../store/currentUser/currentUser.action";
+import { Navigate, useLocation } from "react-router-dom";
 
 const styleButtons = {
     margin: 5
@@ -12,21 +15,63 @@ const FormStyled = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    min-height: 100vh;
+    margin-top: 250px;
 `
 
 const LoginPage: FunctionComponent = () => {
+    const user = useSelector((state: RootState) => state.currentUser);
+    const dispatch = useDispatch();
+    const [login, setLogin] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const location = useLocation();
+
+    const userLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLogin(e.target.value);
+    }
+
+    const userPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    }
+
+    const logIn = () => {
+        dispatch(authorization(login, password));
+    }
+
+    if (user.isLogin) {
+        return <Navigate to="/account" state={{ from: location }} replace />
+    }
+
     return (
         <>
             <FormStyled>
-                <img src={logo} alt="dodo" width={250} />
-                <FormControl>
-                    <TextField style={styleButtons} id="outlined-basic" label="Логин" variant="outlined" color="warning"/>
-                    <TextField style={styleButtons} id="outlined-basic" label="Пароль" variant="outlined" color="warning"/>
-                    <Button style={styleButtons} variant="contained" color="warning">Войти</Button>
-                    <Button style={styleButtons} variant="contained" color="warning">Регистрация</Button>
-                </FormControl>
+                <TextField
+                    style={styleButtons}
+                    label="Логин"
+                    variant="outlined"
+                    color="warning"
+                    onChange={userLogin}
+                />
+                <TextField
+                    style={styleButtons}
+                    label="Пароль"
+                    variant="outlined"
+                    color="warning"
+                    type="password"
+                    onChange={userPassword}
+                />
+                <Button
+                    style={styleButtons}
+                    variant="contained"
+                    color="warning"
+                    onClick={logIn}>
+                    Войти
+                </Button>
             </FormStyled>
+            <Snackbar open={user.error ? true : false} autoHideDuration={3000} >
+                <Alert variant="outlined" severity="error" >
+                    {user.error}
+                </Alert>
+            </Snackbar>
         </>
     );
 }
