@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
 import { UserModel } from "../../api/models"
 import { UsersApi } from './../../api/rest/users.api';
+import { ActionsUnion, createAction } from '../actions-helpers';
 
 export enum CurrentUserActionTypes {
     LOGIN_SUCCESS = 'LOGIN_SUCCESS',
@@ -8,24 +9,14 @@ export enum CurrentUserActionTypes {
     LOGOUT = 'LOGOUT'
 }
 
-interface LogoutAction {
-    type: CurrentUserActionTypes.LOGOUT;
+export const CurrentUserAction = {
+    logoutAction: () => createAction(CurrentUserActionTypes.LOGOUT),
+    loginSuccessAction: (data: UserModel) => createAction(CurrentUserActionTypes.LOGIN_SUCCESS, data),
+    loginFailureAction: (error: string) => createAction(CurrentUserActionTypes.LOGIN_FAILURE, error)
 }
-
-interface LoginSuccessAction {
-    type: CurrentUserActionTypes.LOGIN_SUCCESS;
-    payload: UserModel
-}
-
-interface LoginFailureAction {
-    type: CurrentUserActionTypes.LOGIN_FAILURE;
-    payload: string
-}
-
-export type CurrentUserAction = LoginSuccessAction | LoginFailureAction | LogoutAction
 
 export const authorization = (login: string, password: string) => {
-    return async (dispatch: Dispatch<CurrentUserAction>) => {
+    return async (dispatch: Dispatch) => {
         try {
             const users = await UsersApi.getOrCreateUsers();
             const foundUser = users.find((user) =>
@@ -43,5 +34,7 @@ export const authorization = (login: string, password: string) => {
 }
 
 export const exit = () => {
-    return { type: "LOGOUT" };
+    return { type: CurrentUserActionTypes.LOGOUT };
 }
+
+export type CurrentUserAction = ActionsUnion<typeof CurrentUserAction>;

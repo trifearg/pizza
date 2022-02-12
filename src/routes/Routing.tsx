@@ -1,8 +1,9 @@
-import { FunctionComponent } from "react";
-import AccountPage from '../components/AccountPage/AccountPage';
-import LoginPage from '../components/LoginPage/LoginPage';
-import HomePage from '../components/HomePage/HomePage';
+import { FunctionComponent} from "react";
+import AccountPage from '../layouts/AccountPage/AccountPage';
+import LoginPage from '../layouts/LoginPage/LoginPage';
+import HomePage from '../layouts/HomePage/HomePage';
 import { Routes, Route } from "react-router-dom";
+
 
 const Routing: FunctionComponent = () => {
     return (

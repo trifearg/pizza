@@ -1,10 +1,13 @@
-import { FunctionComponent, useState } from "react";
-import styled from 'styled-components'
+import { FunctionComponent } from "react";
 import { Button, TextField, Alert, Snackbar } from "@mui/material"
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from '../../store';
-import { authorization } from "../../store/currentUser/currentUser.action";
-import { Navigate, useLocation } from "react-router-dom";
+import styled from 'styled-components'
+
+interface IProps {
+    userLogin: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    userPassword: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    logIn: () => void,
+    error: string
+}
 
 const styleButtons = {
     margin: 5
@@ -18,29 +21,7 @@ const FormStyled = styled.div`
     margin-top: 250px;
 `
 
-const LoginPage: FunctionComponent = () => {
-    const user = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useDispatch();
-    const [login, setLogin] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const location = useLocation();
-
-    const userLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLogin(e.target.value);
-    }
-
-    const userPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
-
-    const logIn = () => {
-        dispatch(authorization(login, password));
-    }
-
-    if (user.isLogin) {
-        return <Navigate to="/account" state={{ from: location }} replace />
-    }
-
+const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, error }) => {
     return (
         <>
             <FormStyled>
@@ -67,13 +48,13 @@ const LoginPage: FunctionComponent = () => {
                     Войти
                 </Button>
             </FormStyled>
-            <Snackbar open={user.error ? true : false} autoHideDuration={3000} >
+            <Snackbar open={error ? true : false} autoHideDuration={3000} >
                 <Alert variant="outlined" severity="error" >
-                    {user.error}
+                    {error}
                 </Alert>
             </Snackbar>
         </>
     );
 }
 
-export default LoginPage;
+export default LoginForm;

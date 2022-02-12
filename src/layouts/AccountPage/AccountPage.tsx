@@ -1,8 +1,7 @@
 import { FunctionComponent } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { RootState } from "../../store";
+import { Connector, PropsFromRedux } from "../../store/connector/Connector";
 
 const Container = styled.div`
     display: flex;
@@ -10,11 +9,11 @@ const Container = styled.div`
     align-items: center;
 `
 
-const AccountPage: FunctionComponent = () => {
-    const user = useSelector((state: RootState) => state.currentUser);
+const AccountPage: FunctionComponent = Connector((props: PropsFromRedux) => {
+    const { currentUserIsLogin } = props;
     const location = useLocation();
 
-    if (!user.isLogin) {
+    if (!currentUserIsLogin) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
 
@@ -23,6 +22,6 @@ const AccountPage: FunctionComponent = () => {
             <h1>My account</h1>
         </Container>
     );
-}
+})
 
 export default AccountPage;

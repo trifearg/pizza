@@ -1,28 +1,30 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { AppBar, Box, Toolbar, Typography, Button, IconButton, ButtonGroup } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from "../../assets/logo_navbar.png"
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { exit } from "../../store/currentUser/currentUser.action";
+import Modal from '../Modal/Modal'
+import Cities from "../Cities/Cities";
+import { Connector, PropsFromRedux } from "../../store/connector/Connector";
 
 const styleBox = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexGrow: 1
+    padding: 5
 }
 
 const styleAppBar = {
+    position: "fixed",
+    left: 0,
+    margin: "0 auto",
     bgcolor: '#ed6c02',
     color: 'black',
     width: 1280
 }
 
-const Navbar: FunctionComponent = () => {
-    const user = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useDispatch();
+const Navbar: FunctionComponent = Connector((props: PropsFromRedux) => {
+    const { currentCity, logoutCurrentUser, currentUserIsLogin, modalOpen } = props;
     const navigate = useNavigate();
 
     const transitionToAccount = () => {
@@ -33,13 +35,17 @@ const Navbar: FunctionComponent = () => {
         navigate("/login");
     }
 
+    const open = () => {
+        modalOpen();
+    }
+
     const logOut = () => {
-        dispatch(exit());
+        logoutCurrentUser();
     }
 
     return (
         <Box sx={styleBox}>
-            <AppBar sx={styleAppBar} position="static">
+            <AppBar sx={styleAppBar}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -54,16 +60,24 @@ const Navbar: FunctionComponent = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 1 }}>
                         DemoDodo
                     </Typography>
-                    {!user.isLogin ?
-                        <Button color="inherit" onClick={transitionToLogin}>Войти</Button> :
-                        <ButtonGroup variant="text" color="warning" aria-label="text button group">
-                            <Button color="inherit" onClick={transitionToAccount}>Личный кабинет</Button>
-                            <Button color="inherit" onClick={logOut}>Выйти</Button>
-                        </ButtonGroup>
+                    <Button color="inherit" onClick={open}>
+                        {currentCity}
+                    </Button>
+                    {
+                        !currentUserIsLogin ?
+                            <Button color="inherit" onClick={transitionToLogin}>Войти</Button> :
+                            <ButtonGroup variant="text" color="warning">
+                                <Button color="inherit" onClick={transitionToAccount}>Личный кабинет</Button>
+                                <Button color="inherit" onClick={logOut}>Выйти</Button>
+                            </ButtonGroup>
                     }
                 </Toolbar>
             </AppBar>
+            <Modal>
+                <Cities/>
+            </Modal>
         </Box>
     );
-}
+})
+
 export default Navbar;
