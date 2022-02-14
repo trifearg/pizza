@@ -8,7 +8,6 @@ export interface UserModel {
     role: UserRole;
 } 
 
-
 export const defaultUsers: UserModel[] = [
     {   
         id: 1,
