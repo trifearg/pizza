@@ -1,44 +1,59 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import { Box, Grid, Input, Button } from "@mui/material";
-import { Connector, PropsFromRedux } from "../../store/connector/Connector";
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Box, Grid, Input, Button } from '@mui/material';
 
-const cities = ["Москва", "Санкт-Петербург", "Самара", "Казань", "Калининград", "Ульяновск", "Таганрог", "Тверь", "Оренбург", "Сочи"];
+interface IProps {
+    modalClose: () => void;
+    updateCurrentCity: (city: string) => void;
+}
 
-const Cities: FunctionComponent = Connector((props: PropsFromRedux) => {
-    const { modalClose, updateCurrentCity } = props;
-    const [searchItem, setSearchItem] = useState<string>("");
+const cities = [
+    'Москва',
+    'Санкт-Петербург',
+    'Самара',
+    'Казань',
+    'Калининград',
+    'Ульяновск',
+    'Таганрог',
+    'Тверь',
+    'Оренбург',
+    'Сочи',
+];
+
+const Cities: FunctionComponent<IProps> = ({ modalClose, updateCurrentCity }) => {
+    const [searchItem, setSearchItem] = useState<string>('');
     const [searchResults, setSearchResults] = useState<string[]>([]);
 
     useEffect(() => {
         const results = cities.filter((item) => item.toLowerCase().includes(searchItem.toLowerCase()));
         setSearchResults(results);
-    }, [searchItem])
+    }, [searchItem]);
 
     const searchCity = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchItem(e.target.value);
-    }
+    };
 
     const handleChangeCity = (city: string) => {
         updateCurrentCity(city);
         modalClose();
-    }
+    };
 
     return (
-        <Box sx={{width: 500, height: 200, margin: 5}}>
-            <Input placeholder="Введите город" color="warning" sx={{marginBottom: 5}} onChange={searchCity} />
+        <Box sx={{ width: 500, height: 200, margin: 5, display: 'flex', flexDirection: 'column' }}>
+            <Input placeholder="Введите город" color="warning" sx={{ marginBottom: 5 }} onChange={searchCity} />
             <Grid container spacing={2}>
-                {
-                    searchResults.map((elem, index) =>
-                        <Grid xs key={`city:${index}`} item>
-                            <Button color="inherit" size="small" onClick={() => handleChangeCity(elem)}>
-                                {elem}
-                            </Button>
-                        </Grid>
-                    )
-                }
+                {searchResults.map((elem, index) => (
+                    <Grid xs key={`city:${index}`} item>
+                        <Button color="inherit" size="small" onClick={() => handleChangeCity(elem)}>
+                            {elem}
+                        </Button>
+                    </Grid>
+                ))}
             </Grid>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 3, marginTop: 3 }} onClick={modalClose}>
+                <Button color="warning">Закрыть</Button>
+            </Box>
         </Box>
     );
-})
+};
 
 export default Cities;

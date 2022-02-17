@@ -3,15 +3,13 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { UsersState } from './users';
 import { PizzaState } from './pizza';
-import { CurrentUserState } from './currentUser';
-import { CurrentCityState } from './currentCity'
 import { ModalState } from './modal';
+import { AppState } from './app';
 
 export interface RootState {
+  app: AppState,
   users: UsersState,
   pizza: PizzaState,
-  currentUser: CurrentUserState,
-  currentCity: CurrentCityState,
   modal: ModalState
 }
 

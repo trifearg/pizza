@@ -1,14 +1,16 @@
-import { ModalAction, ModalActionTypes } from "./modal.action"
+import { ModalActions, ModalActionTypes } from "./modal.action"
 
 export interface ModalState {
-    isOpen: boolean
+    isOpen: boolean,
+    typeModal: string
 }
 
 const initialState: ModalState = {
-    isOpen: false
+    isOpen: false,
+    typeModal: ""
 }
 
-export const modalReducer = (state = initialState, action: ModalAction): ModalState => {
+export const modalReducer = (state = initialState, action: ModalActions): ModalState => {
     switch(action.type) {
         case ModalActionTypes.CLOSE: 
             return {
@@ -20,6 +22,12 @@ export const modalReducer = (state = initialState, action: ModalAction): ModalSt
             return {
                 ...state,
                 isOpen: true
+            }
+
+        case ModalActionTypes.TYPE:
+            return {
+                ...state,
+                typeModal: action.payload
             }
 
         default:

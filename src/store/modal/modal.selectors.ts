@@ -7,3 +7,8 @@ export const modalIsOpen = createSelector(
     getModal,
     modalState => modalState.isOpen
 );
+
+export const modalType = createSelector(
+    getModal,
+    modalState => modalState.typeModal
+)

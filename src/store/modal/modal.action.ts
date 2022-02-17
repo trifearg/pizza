@@ -2,12 +2,14 @@ import { ActionsUnion, createAction } from "../actions-helpers"
 
 export enum ModalActionTypes {
     OPEN = "OPEN",
-    CLOSE = "CLOSE" 
+    CLOSE = "CLOSE",
+    TYPE = "TYPE" 
 }
 
 export const ModalAction = {
     open: () => createAction(ModalActionTypes.OPEN),
-    close: () => createAction(ModalActionTypes.CLOSE)
+    close: () => createAction(ModalActionTypes.CLOSE),
+    typeModal: (data: string) => createAction(ModalActionTypes.TYPE, data)
 }
 
 export const openModal = () => {
@@ -22,4 +24,11 @@ export const closeModal = () => {
     }
 }
 
-export type ModalAction = ActionsUnion<typeof ModalAction>
+export const setType = (typeModal: string) => {
+    return {
+        type: ModalActionTypes.TYPE,
+        payload: typeModal
+    }
+}
+
+export type ModalActions = ActionsUnion<typeof ModalAction>
