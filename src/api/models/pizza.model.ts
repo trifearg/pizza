@@ -1,16 +1,18 @@
 interface Optionals {
     name: string,
-    price: number
+    price: number,
+    photo?: string;
+    added?: boolean;
 }
 
 export interface PizzaModel {
-    id: number,
+    id: number | string,
     name: string,
     photo: string,
     description?: string,
     price: number,
     ingredients?: Array<Optionals>,
-    pizzaType?: Optionals
+    pizzaType?: string
 }
 
 export const defaultPizza: PizzaModel[] = [

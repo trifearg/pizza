@@ -27,10 +27,7 @@ const initialState: AppState = {
         description: "",
         price: 0,
         ingredients: [],
-        pizzaType: {
-            name: "",
-            price: 0
-        }
+        pizzaType: ""
     }
 }
 

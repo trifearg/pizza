@@ -38,7 +38,7 @@ const Cities: FunctionComponent<IProps> = ({ modalClose, updateCurrentCity }) =>
     };
 
     return (
-        <Box sx={{ width: 500, height: 200, margin: 5, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: 500, height: 200, margin: 5, display: 'flex', flexDirection: 'column', justifyContent: "space-between" }}>
             <Input placeholder="Введите город" color="warning" sx={{ marginBottom: 5 }} onChange={searchCity} />
             <Grid container spacing={2}>
                 {searchResults.map((elem, index) => (

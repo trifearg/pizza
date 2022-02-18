@@ -35,7 +35,7 @@ const PizzaCard: FunctionComponent<IProps> = ({
             <CardActionArea sx={{ height: 490 }}>
                 <CardMedia component="img" height="300" image={photo} alt="pizza" />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h5" sx={{fontWeight: "bold"}} component="div">
                         {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ height: 100 }}>
@@ -45,7 +45,7 @@ const PizzaCard: FunctionComponent<IProps> = ({
             </CardActionArea>
             <CardActions sx={{ justifyContent: 'space-between', marginLeft: 2 }}>
                 <Typography variant="h5" gutterBottom component="div">
-                    {price}
+                    от {price}₽
                 </Typography>
                 <Button variant="outlined" size="small" color="warning">
                     Добавить

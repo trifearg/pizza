@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
-import { AppBar, Box, Toolbar, Typography, Button, IconButton, ButtonGroup } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Toolbar, Typography, Button, ButtonGroup } from '@mui/material';
 import logo from '../../assets/logo_navbar.png';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -25,7 +24,8 @@ interface IProps {
     logoutCurrentUser: () => void;
     currentUserIsLogin: boolean;
     modalOpen: () => void;
-    setBodyPopup: (body: string) => void
+    setBodyPopup: (body: string) => void;
+    cartOpen: () => void;
 }
 
 const Navbar: FunctionComponent<IProps> = ({
@@ -33,7 +33,8 @@ const Navbar: FunctionComponent<IProps> = ({
     logoutCurrentUser,
     currentUserIsLogin,
     modalOpen,
-    setBodyPopup
+    setBodyPopup,
+    cartOpen,
 }) => {
     const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ const Navbar: FunctionComponent<IProps> = ({
     };
 
     const popupCities = () => {
-        setBodyPopup("cities")
+        setBodyPopup('cities');
         modalOpen();
     };
 
@@ -54,9 +55,6 @@ const Navbar: FunctionComponent<IProps> = ({
         <Box sx={styleBox}>
             <AppBar sx={styleAppBar}>
                 <Toolbar>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                        <MenuIcon />
-                    </IconButton>
                     <Link to="/">
                         <img src={logo} alt="logo" width={45} />
                     </Link>
@@ -66,6 +64,9 @@ const Navbar: FunctionComponent<IProps> = ({
                     <Button color="inherit" onClick={popupCities}>
                         {currentCity}
                     </Button>
+                    <Button color="inherit" onClick={cartOpen}>
+                        Корзина
+                    </Button>
                     {!currentUserIsLogin ? (
                         <Button color="inherit" onClick={transitionToLogin}>
                             Войти
@@ -73,7 +74,7 @@ const Navbar: FunctionComponent<IProps> = ({
                     ) : (
                         <ButtonGroup variant="text" color="warning">
                             <Button color="inherit" onClick={transitionToAccount}>
-                                Личный кабинет
+                                Кабинет
                             </Button>
                             <Button color="inherit" onClick={logoutCurrentUser}>
                                 Выйти

@@ -1,9 +1,13 @@
 import { Box, Grid, Stack, Typography, Button, FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { ChangeEvent, FunctionComponent, useState } from 'react';
 import { PizzaModel } from '../../api/models';
+import { v4 as uuid } from 'uuid';
 
 interface IProps {
     product: PizzaModel;
+    addProductToCart: (product: PizzaModel) => void;
+    modalClose: () => void,
+    addCost: (price: number) => void 
 }
 
 interface Ingreient {
@@ -52,7 +56,7 @@ const ingredients: Ingreient[] = [
     },
 ];
 
-const PizzaPopup: FunctionComponent<IProps> = ({ product }) => {
+const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, modalClose, addCost }) => {
     const typesOfPizza = [
         {
             name: 'Маленькая',
@@ -71,6 +75,7 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product }) => {
     const [currentPrice, setCurrentPrice] = useState<number>(price);
     const [currentIngredients, setCurrentIngredients] = useState<Ingreient[]>(ingredients);
     const [ingredientsPizzaAdded, setIngredientsPizzaAdded] = useState<Ingreient[]>([]);
+    const [typePizzaAdded, setTypePizzaAdded] = useState<string>(typesOfPizza[0].name);
     const [currentPriceType, setCurrentPriceType] = useState<number>(typesOfPizza[0].price);
 
     const addGradient = (ingredient: Ingreient) => {
@@ -95,13 +100,28 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product }) => {
         }
     };
 
+    const addProduct = () => {
+        const uniqueIdProduct = uuid();
+        const newProduct = {
+            id: id + uniqueIdProduct,
+            name: name,
+            photo: photo,
+            price: currentPrice,
+            ingredients: ingredientsPizzaAdded,
+            pizzaType: typePizzaAdded,
+        };
+        addProductToCart(newProduct);
+        addCost(newProduct.price);
+        modalClose();
+    };
+
     return (
         <>
             <Box sx={{ width: 900, height: 405 }}>
                 <Stack direction="row" spacing={1} sx={{ margin: 5 }}>
                     <img src={photo} alt="pizza model" width="350px" height="350px" />
                     <Stack direction="column" spacing={2} sx={{ height: 350, overflowY: 'scroll' }}>
-                        <Typography variant="h4" mt={2}>
+                        <Typography variant="h4" sx={{fontWeight: "bold"}} mt={2}>
                             {name}
                         </Typography>
                         <FormControl>
@@ -117,6 +137,7 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product }) => {
                                         key={`toggleButton:${index}`}
                                         control={<Radio color="warning" />}
                                         label={item.name}
+                                        onClick={() => setTypePizzaAdded(item.name)}
                                     />
                                 ))}
                             </RadioGroup>
@@ -153,7 +174,7 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product }) => {
                 </Stack>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: 5, marginTop: 1, marginBottom: 1 }}>
-                <Button color="warning" variant="contained">
+                <Button color="warning" variant="contained" onClick={() => addProduct()}>
                     Добавить в корзину за {currentPrice}₽
                 </Button>
             </Box>
