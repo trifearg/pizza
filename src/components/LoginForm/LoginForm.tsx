@@ -1,17 +1,17 @@
-import { FunctionComponent } from "react";
-import { Button, TextField, Alert, Snackbar } from "@mui/material"
-import styled from 'styled-components'
+import { FunctionComponent } from 'react';
+import { Button, TextField, Alert, Snackbar } from '@mui/material';
+import styled from 'styled-components';
 
 interface IProps {
-    userLogin: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    userPassword: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    logIn: () => void,
-    error: string
-}
+    userLogin: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    userPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    logIn: () => void;
+    error: string;
+};
 
 const styleButtons = {
-    margin: 5
-}
+    margin: 5,
+};
 
 const FormStyled = styled.div`
     display: flex;
@@ -19,7 +19,7 @@ const FormStyled = styled.div`
     justify-content: center;
     flex-direction: column;
     margin-top: 250px;
-`
+`;
 
 const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, error }) => {
     return (
@@ -40,21 +40,17 @@ const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, 
                     type="password"
                     onChange={userPassword}
                 />
-                <Button
-                    style={styleButtons}
-                    variant="contained"
-                    color="warning"
-                    onClick={logIn}>
+                <Button style={styleButtons} variant="contained" color="warning" onClick={logIn}>
                     Войти
                 </Button>
             </FormStyled>
-            <Snackbar open={error ? true : false} autoHideDuration={3000} >
-                <Alert variant="outlined" severity="error" >
+            <Snackbar open={error ? true : false} autoHideDuration={3000}>
+                <Alert variant="outlined" severity="error">
                     {error}
                 </Alert>
             </Snackbar>
         </>
     );
-}
+};
 
 export default LoginForm;

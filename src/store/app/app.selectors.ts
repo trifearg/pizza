@@ -1,19 +1,29 @@
 import { RootState } from "../state.types";
 import { createSelector } from "reselect";
 
-export const getUser = (state: RootState) => state.currentUser;
+export const getApp = (state: RootState) => state.app;
+
+export const getCurrentCity = createSelector(
+    getApp,
+    currentCityState => currentCityState.city
+);
 
 export const getCurrentUser = createSelector(
-    getUser,
+    getApp,
     currentUserState => currentUserState.user
 );
 
 export const isLogin = createSelector(
-    getUser,
+    getApp,
     currentUserState => currentUserState.isLogin
 );
 
 export const error = createSelector(
-    getUser,
+    getApp,
     currentUserState => currentUserState.error
+);
+
+export const getCurrentProduct = createSelector(
+    getApp,
+    currentProduct => currentProduct.product
 );

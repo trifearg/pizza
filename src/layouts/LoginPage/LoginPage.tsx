@@ -1,28 +1,45 @@
-import { FunctionComponent, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import LoginForm from "../../components/LoginForm/LoginForm";
-import { Connector, PropsFromRedux } from '../../store/connector/Connector';
+import { FunctionComponent, useState } from 'react';
+import { connect, InferableComponentEnhancerWithProps } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import { DispatchThunk, RootState } from '../../store';
+import { authorization, error, isLogin } from '../../store/app';
+
+const Connector = connect(
+    (state: RootState) => ({
+        currentUserIsLogin: isLogin(state),
+        currentUserError: error(state),
+    }),
+    (dispatch: DispatchThunk) => ({
+        authorizationCurrentUser: (login: string, password: string) => {
+            dispatch(authorization(login, password));
+        },
+    })
+);
+
+type GetProps<C> = C extends InferableComponentEnhancerWithProps<infer P, {}> ? P : never;
+type PropsFromRedux = GetProps<typeof Connector>;
 
 const LoginPage: FunctionComponent = Connector((props: PropsFromRedux) => {
     const { authorizationCurrentUser, currentUserIsLogin, currentUserError } = props;
-    const [login, setLogin] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [login, setLogin] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const location = useLocation();
 
     const userLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLogin(e.target.value);
-    }
+    };
 
     const userPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
-    }
+    };
 
     const logIn = () => {
         authorizationCurrentUser(login, password);
-    }
+    };
 
     if (currentUserIsLogin) {
-        return <Navigate to="/account" state={{ from: location }} replace />
+        return <Navigate to="/account" state={{ from: location }} replace />;
     }
 
     return (
@@ -33,6 +50,6 @@ const LoginPage: FunctionComponent = Connector((props: PropsFromRedux) => {
             error={currentUserError}
         />
     );
-})
+});
 
 export default LoginPage;

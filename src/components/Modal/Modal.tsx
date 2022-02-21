@@ -1,23 +1,22 @@
-import { Button, Dialog, DialogActions } from "@mui/material";
-import { ReactElement, ReactNode } from "react";
-import { Connector, PropsFromRedux } from "../../store/connector/Connector";
+import { Dialog } from '@mui/material';
+import { FunctionComponent, ReactElement, ReactNode } from 'react';
+import ReactDOM from 'react-dom';
 
-interface IProps extends PropsFromRedux {
-    children: ReactElement<ReactNode>
+interface IProps {
+    children: ReactElement<ReactNode>;
+    isOpen: boolean;
+    modalClose: () => void
 }
 
-const Modal = Connector((props: IProps) => {
-    const { isOpen, modalClose, children } = props;
-    return (
+const Modal: FunctionComponent<IProps> = ({ isOpen, modalClose, children }) => {
+    return ReactDOM.createPortal(
         <>
-            <Dialog onClose={modalClose} open={isOpen}>
+            <Dialog onClose={modalClose} open={isOpen} maxWidth={false} scroll="paper"> 
                 {children}
-                <DialogActions>
-                    <Button onClick={modalClose} color="warning">Закрыть</Button>
-                </DialogActions>
             </Dialog>
-        </>
+        </>,
+        document.getElementById('root') as HTMLElement
     );
-});
+};
 
 export default Modal;

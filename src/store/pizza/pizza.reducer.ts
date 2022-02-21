@@ -1,5 +1,5 @@
 import { PizzaModel } from "../../api/models";
-import { PizzaAction, PizzaActionTypes } from "./pizza.actions";
+import { PizzaActions, PizzaActionTypes } from "./pizza.actions";
 
 export interface PizzaState {
     pizza: PizzaModel[],
@@ -13,7 +13,7 @@ const initialState: PizzaState = {
     fetchingPizzaError: ""
 }
 
-export const pizzaReducer = (state = initialState, action: PizzaAction): PizzaState => {
+export const pizzaReducer = (state = initialState, action: PizzaActions): PizzaState => {
     switch (action.type) {
         case PizzaActionTypes.START_FETCHING_PIZZA:
             return {
