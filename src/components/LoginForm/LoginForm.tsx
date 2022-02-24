@@ -7,7 +7,7 @@ interface IProps {
     userPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
     logIn: () => void;
     error: string;
-};
+}
 
 const styleButtons = {
     margin: 5,
@@ -25,13 +25,7 @@ const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, 
     return (
         <>
             <FormStyled>
-                <TextField
-                    style={styleButtons}
-                    label="Логин"
-                    variant="outlined"
-                    color="warning"
-                    onChange={userLogin}
-                />
+                <TextField style={styleButtons} label="Логин" variant="outlined" color="warning" onChange={userLogin} />
                 <TextField
                     style={styleButtons}
                     label="Пароль"
@@ -44,11 +38,11 @@ const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, 
                     Войти
                 </Button>
             </FormStyled>
-            <Snackbar open={error ? true : false} autoHideDuration={3000}>
+            <Snackbar open={error ? true : false}>
                 <Alert variant="outlined" severity="error">
                     {error}
                 </Alert>
-            </Snackbar>
+            </Snackbar> 
         </>
     );
 };

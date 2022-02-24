@@ -42,7 +42,8 @@ export const appReducer = (state = initialState, action: AppActions): AppState =
             return {
                 ...state,
                 user: action.payload,
-                isLogin: true
+                isLogin: true,
+                error: ""
             }
         case AppActionTypes.LOGIN_FAILURE:
             return {
@@ -53,6 +54,7 @@ export const appReducer = (state = initialState, action: AppActions): AppState =
         case AppActionTypes.LOGOUT:
             return {
                 ...state,
+                user: {...state.user, id: 0, login: "", password: "", name: "", role: 0},
                 isLogin: false,
                 error: ""
             }

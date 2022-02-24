@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { RootState } from '../../store';
 import { isLogin } from '../../store/app';
 
+
 const Container = styled.div`
     display: flex;
     justify-content: center;
@@ -33,4 +34,5 @@ const AccountPage: FunctionComponent = Connector((props: PropsFromRedux) => {
     );
 });
 
+AccountPage.displayName = 'AccountPage';
 export default AccountPage;

@@ -1,9 +1,4 @@
-interface Optionals {
-    name: string,
-    price: number,
-    photo?: string;
-    added?: boolean;
-}
+import { Ingredient } from './ingredient.model'
 
 export interface PizzaModel {
     id: number | string,
@@ -11,7 +6,7 @@ export interface PizzaModel {
     photo: string,
     description?: string,
     price: number,
-    ingredients?: Array<Optionals>,
+    ingredients?: Ingredient[],
     pizzaType?: string
 }
 

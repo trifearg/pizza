@@ -12,23 +12,10 @@ export const ModalAction = {
     typeModal: (data: string) => createAction(ModalActionTypes.TYPE, data)
 }
 
-export const openModal = () => {
-    return {
-        type: ModalActionTypes.OPEN
-    }
-}
-
-export const closeModal = () => {
-    return {
-        type: ModalActionTypes.CLOSE
-    }
-}
-
-export const setType = (typeModal: string) => {
-    return {
-        type: ModalActionTypes.TYPE,
-        payload: typeModal
-    }
+export const modalActions = {
+    openModal: () => ModalAction.open(),
+    closeModal: () => ModalAction.close(),
+    setType: (typeModal: string) => ModalAction.typeModal(typeModal)
 }
 
 export type ModalActions = ActionsUnion<typeof ModalAction>

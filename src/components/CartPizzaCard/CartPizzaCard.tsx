@@ -2,11 +2,7 @@ import { Card, Stack, CardMedia, CardContent, Typography, Divider } from '@mui/m
 import { FunctionComponent } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-interface Optionals {
-    name: string;
-    price: number;
-}
+import { Ingredient } from '../../api/models/ingredient.model'
 
 interface IProps {
     id: string | number;
@@ -14,7 +10,7 @@ interface IProps {
     name: string;
     pizzaType?: string;
     price: number;
-    ingredients?: Optionals[];
+    ingredients?: Ingredient[];
     deleteProductFromCart: (id: string | number) => void;
     subtractCost: (price: number) => void; 
 }

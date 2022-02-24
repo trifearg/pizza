@@ -15,17 +15,19 @@ export const PizzaAction = {
     errorFetchingPizza: (error: string) => createAction(PizzaActionTypes.ERROR_FETCHING_PIZZA, error)
 };
 
-export const onFetchPizza = () => {
-    return async (dispatch: Dispatch) => {
-        try {
-            dispatch({type: PizzaActionTypes.START_FETCHING_PIZZA});
-            const data = await PizzaApi.getPizza();
-            setTimeout(() => {
-                dispatch({type: PizzaActionTypes.SUCCESS_FETCHING_PIZZA, payload: data});
-            }, 1000);
-        } catch(e) {
-            dispatch({type: PizzaActionTypes.ERROR_FETCHING_PIZZA, payload: "Ошибка получения данных"});
-        }
+export const pizzaActions = {
+    onFetchPizza: () => {
+        return async (dispatch: Dispatch) => {
+            try {
+                dispatch(PizzaAction.startFetchingPizza());
+                const data = await PizzaApi.getPizza();
+                setTimeout(() => {
+                    dispatch(PizzaAction.successFetchingPizza(data));
+                }, 1000);
+            } catch(e) {
+                dispatch(PizzaAction.errorFetchingPizza("Ошибка получения данных"));
+            }
+        } 
     }
 }
 

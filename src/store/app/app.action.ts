@@ -19,38 +19,30 @@ export const AppAction = {
     setProductToPopup: (data: PizzaModel) => createAction(AppActionTypes.SET_PRODUCT, data)
 }
 
-export const updateCity = (city: string) => {
-    localStorage.setItem("currentCity", city);
-    return {
-        type: AppActionTypes.UPDATE_CITY,
-        payload: city
-    }
-}
-
-export const authorization = (login: string, password: string) => {
-    return async (dispatch: Dispatch) => {
-        try {
-            const users = await UsersApi.getOrCreateUsers();
-            const foundUser = users.find((user) =>
-                user.login === login && user.password === password
-            )
-            if (foundUser) {
-                dispatch({ type: AppActionTypes.LOGIN_SUCCESS, payload: foundUser });
-            } else {
-                dispatch({ type: AppActionTypes.LOGIN_FAILURE, payload: "Такого пользователя не существует." });
+export const appActions = {
+    updateCity: (city: string) => {
+        localStorage.setItem("currentCity", city);
+        return AppAction.updateCity(city);
+    },
+    authorization: (login: string, password: string) => {
+        return async (dispatch: Dispatch) => {
+            try {
+                const users = await UsersApi.getOrCreateUsers();
+                const foundUser = users.find((user) =>
+                    user.login === login && user.password === password
+                )
+                if (foundUser) {
+                    dispatch(AppAction.loginSuccessAction(foundUser));
+                } else {
+                    dispatch(AppAction.loginFailureAction("Такого пользователя не существует."));
+                }
+            } catch (e) {
+                dispatch(AppAction.loginFailureAction("Ошибка получения данных пользователей."));
             }
-        } catch (e) {
-            dispatch({ type: AppActionTypes.LOGIN_FAILURE, payload: "Ошибка получения данных пользователей." });
         }
-    }
+    },
+    exit: () => AppAction.logoutAction(),
+    setProduct: (product: PizzaModel) => AppAction.setProductToPopup(product)
 }
-
-export const exit = () => {
-    return { type: AppActionTypes.LOGOUT };
-}
-
-export const setProduct = (product: PizzaModel) => {
-    return { type: AppActionTypes.SET_PRODUCT, payload: product }
-} 
 
 export type AppActions = ActionsUnion<typeof AppAction>;

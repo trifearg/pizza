@@ -5,7 +5,7 @@ import CartPizzaList from '../CartPizzaList/CartPizzaList';
 import logo from '../../assets/cart_empty.svg';
 
 interface IProps {
-    cart: Array<PizzaModel>;
+    cart: PizzaModel[];
     isOpenCart: boolean;
     cartClose: () => void;
     deleteProductFromCart: (id: string | number) => void;
@@ -14,6 +14,7 @@ interface IProps {
 }
 
 class Cart extends Component<IProps, {}> {
+
     render() {
         return (
             <Drawer anchor="right" open={this.props.isOpenCart} onClose={this.props.cartClose}>

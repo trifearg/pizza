@@ -1,9 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { connect, InferableComponentEnhancerWithProps } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import ErrorBoundary from '../../components/AlertError/ErrorBoundary';
+import FictionalError from '../../components/AlertError/FictionalError';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { DispatchThunk, RootState } from '../../store';
-import { authorization, error, isLogin } from '../../store/app';
+import { appActions, error, isLogin } from '../../store/app';
 
 const Connector = connect(
     (state: RootState) => ({
@@ -12,7 +14,7 @@ const Connector = connect(
     }),
     (dispatch: DispatchThunk) => ({
         authorizationCurrentUser: (login: string, password: string) => {
-            dispatch(authorization(login, password));
+            dispatch(appActions.authorization(login, password));
         },
     })
 );
@@ -43,13 +45,14 @@ const LoginPage: FunctionComponent = Connector((props: PropsFromRedux) => {
     }
 
     return (
-        <LoginForm
-            userLogin={userLogin}
-            userPassword={userPassword}
-            logIn={logIn}
-            error={currentUserError}
-        />
+        <>
+            <LoginForm userLogin={userLogin} userPassword={userPassword} logIn={logIn} error={currentUserError} />
+            <ErrorBoundary>
+                <FictionalError login={login} />
+            </ErrorBoundary>
+        </>
     );
 });
 
+LoginPage.displayName = 'LoginPage';
 export default LoginPage;

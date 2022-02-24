@@ -1,7 +1,8 @@
 import { Box, Grid, Stack, Typography, Button, FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useCallback, useState } from 'react';
 import { PizzaModel } from '../../api/models';
 import { v4 as uuid } from 'uuid';
+import { ingredients, Ingredient } from '../../api/models/ingredient.model'
 
 interface IProps {
     product: PizzaModel;
@@ -9,52 +10,6 @@ interface IProps {
     modalClose: () => void,
     addCost: (price: number) => void 
 }
-
-interface Ingreient {
-    name: string;
-    price: number;
-    photo: string;
-    added: boolean;
-}
-
-const ingredients: Ingreient[] = [
-    {
-        name: 'Острый халапеньо',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA5E376B4DF',
-        added: false,
-    },
-    {
-        name: 'Ветчина',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA61B9A8D61',
-        added: false,
-    },
-    {
-        name: 'Томаты',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA7AC1A1D67',
-        added: false,
-    },
-    {
-        name: 'Сладкий перец',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA63F774C1B',
-        added: false,
-    },
-    {
-        name: 'Бекон',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA637AAB68F',
-        added: false,
-    },
-    {
-        name: 'Красный лук',
-        price: 79,
-        photo: 'https://dodopizza-a.akamaihd.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA60AE6464C',
-        added: false,
-    },
-];
 
 const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, modalClose, addCost }) => {
     const typesOfPizza = [
@@ -73,12 +28,12 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, moda
     ];
     const { name, id, price, photo } = product;
     const [currentPrice, setCurrentPrice] = useState<number>(price);
-    const [currentIngredients, setCurrentIngredients] = useState<Ingreient[]>(ingredients);
-    const [ingredientsPizzaAdded, setIngredientsPizzaAdded] = useState<Ingreient[]>([]);
+    const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>(ingredients);
+    const [ingredientsPizzaAdded, setIngredientsPizzaAdded] = useState<Ingredient[]>([]);
     const [typePizzaAdded, setTypePizzaAdded] = useState<string>(typesOfPizza[0].name);
     const [currentPriceType, setCurrentPriceType] = useState<number>(typesOfPizza[0].price);
 
-    const addGradient = (ingredient: Ingreient) => {
+    const addGradient = (ingredient: Ingredient) => {
         if (!ingredient.added) {
             setIngredientsPizzaAdded([...ingredientsPizzaAdded, ingredient]);
             setCurrentPrice((prev) => prev + ingredient.price);
@@ -91,14 +46,14 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, moda
         );
     };
 
-    const addTypeOfPizza = (e: ChangeEvent<HTMLInputElement>) => {
+    const addTypeOfPizza = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setCurrentPriceType(+e.target.value);
         if (ingredientsPizzaAdded.length) {
             setCurrentPrice(ingredientsPizzaAdded.reduce((acc, value) => acc + value.price, +e.target.value));
         } else {
             setCurrentPrice(+e.target.value);
         }
-    };
+    }, [ingredientsPizzaAdded]);
 
     const addProduct = () => {
         const uniqueIdProduct = uuid();

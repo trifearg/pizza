@@ -1,44 +1,25 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import Navbar from '../components/Navbar/Navbar';
-import { createGlobalStyle } from 'styled-components';
 import Routing from '../routes/Routing';
 import Modal from '../components/Modal/Modal';
 import { connect, InferableComponentEnhancerWithProps } from 'react-redux';
 import { DispatchThunk, RootState } from '../store';
-import { closeModal, modalIsOpen, modalType, openModal, setType } from '../store/modal';
-import { error, exit, getCurrentCity, getCurrentProduct, isLogin, updateCity } from '../store/app';
+import { modalActions, modalIsOpen, modalType } from '../store/modal';
+import { appActions, error, getCurrentCity, getCurrentProduct, isLogin } from '../store/app';
 import Cities from '../components/Cities/Cities';
 import PizzaPopup from '../components/PizzaPopup/PizzaPopup';
-import {
-    addProduct,
-    addTotalCost,
-    cartIsOpen,
-    closeDrawer,
-    deleteProduct,
-    getCurrentCart,
-    getTotalCost,
-    openDrawer,
-    subtractTotalCost,
-} from '../store/cart';
+import { cartActions, cartIsOpen, getCurrentCart, getTotalCost } from '../store/cart';
 import { PizzaModel } from '../api/models';
 import Cart from '../components/Cart/Cart';
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import '../index.css'
+import '../index.css';
+import { createGlobalStyle } from 'styled-components';
+import { ColorModeContext } from '../theme/ThemeContext';
 
-const AppStyled = createGlobalStyle`
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%
-  }
+const ThemeBody = createGlobalStyle`
+    body {
+        background-color: ${(props) => (props.theme ? '#212121' : 'white')} 
+    }
 `;
-
-const theme = createTheme({
-    typography: {
-        fontFamily: ['Montserrat', 'sans-serif'].join(','),
-    },
-});
 
 export const Connector = connect(
     (state: RootState) => ({
@@ -54,37 +35,37 @@ export const Connector = connect(
     }),
     (dispatch: DispatchThunk) => ({
         updateCurrentCity: (city: string) => {
-            dispatch(updateCity(city));
+            dispatch(appActions.updateCity(city));
         },
         logoutCurrentUser: () => {
-            dispatch(exit());
+            dispatch(appActions.exit());
         },
         modalOpen: () => {
-            dispatch(openModal());
+            dispatch(modalActions.openModal());
         },
         modalClose: () => {
-            dispatch(closeModal());
+            dispatch(modalActions.closeModal());
         },
         setBodyPopup: (body: string) => {
-            dispatch(setType(body));
+            dispatch(modalActions.setType(body));
         },
         cartOpen: () => {
-            dispatch(openDrawer());
+            dispatch(cartActions.openDrawer());
         },
         cartClose: () => {
-            dispatch(closeDrawer());
+            dispatch(cartActions.closeDrawer());
         },
         addProductToCart: (product: PizzaModel) => {
-            dispatch(addProduct(product));
+            dispatch(cartActions.addProduct(product));
         },
         deleteProductFromCart: (id: string | number) => {
-            dispatch(deleteProduct(id));
+            dispatch(cartActions.deleteProduct(id));
         },
         subtractCost: (price: number) => {
-            dispatch(subtractTotalCost(price));
+            dispatch(cartActions.subtractTotalCost(price));
         },
         addCost: (price: number) => {
-            dispatch(addTotalCost(price));
+            dispatch(cartActions.addTotalCost(price));
         },
     })
 );
@@ -114,35 +95,36 @@ const App: FunctionComponent = Connector((props: PropsFromRedux) => {
         subtractCost,
         totalCost,
     } = props;
+    const colorTheme = useContext(ColorModeContext);
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <AppStyled />
-                <Navbar
-                    currentCity={currentCity}
-                    logoutCurrentUser={logoutCurrentUser}
-                    currentUserIsLogin={currentUserIsLogin}
-                    modalOpen={modalOpen}
-                    setBodyPopup={setBodyPopup}
-                    cartOpen={cartOpen}
-                />
-                <Routing />
-                {bodyPopup === 'cities' ? (
-                    <Modal modalClose={modalClose} isOpen={isOpenModal}>
-                        <Cities updateCurrentCity={updateCurrentCity} modalClose={modalClose} />
-                    </Modal>
-                ) : null}
-                {bodyPopup === 'pizzaModel' ? (
-                    <Modal modalClose={modalClose} isOpen={isOpenModal}>
-                        <PizzaPopup
-                            product={product}
-                            addProductToCart={addProductToCart}
-                            modalClose={modalClose}
-                            addCost={addCost}
-                        />
-                    </Modal>
-                ) : null}
+            <ThemeBody theme={colorTheme.modeTheme} />
+            <Navbar
+                currentCity={currentCity}
+                logoutCurrentUser={logoutCurrentUser}
+                currentUserIsLogin={currentUserIsLogin}
+                modalOpen={modalOpen}
+                setBodyPopup={setBodyPopup}
+                cartOpen={cartOpen}
+                cart={cart}
+            />
+            <Routing />
+            {bodyPopup === 'cities' ? (
+                <Modal modalClose={modalClose} isOpen={isOpenModal}>
+                    <Cities updateCurrentCity={updateCurrentCity} modalClose={modalClose} />
+                </Modal>
+            ) : null}
+            {bodyPopup === 'pizzaModel' ? (
+                <Modal modalClose={modalClose} isOpen={isOpenModal}>
+                    <PizzaPopup
+                        product={product}
+                        addProductToCart={addProductToCart}
+                        modalClose={modalClose}
+                        addCost={addCost}
+                    />
+                </Modal>
+            ) : null}
                 <Cart
                     cart={cart}
                     isOpenCart={isOpenCart}
@@ -151,7 +133,6 @@ const App: FunctionComponent = Connector((props: PropsFromRedux) => {
                     totalCost={totalCost}
                     subtractCost={subtractCost}
                 />
-            </ThemeProvider>
         </>
     );
 });

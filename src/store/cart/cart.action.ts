@@ -19,45 +19,13 @@ export const CartAction = {
     subtractCost: (data: number) => createAction(CartActionTypes.SUBTRACT_TOTAL_COST, data)
 }
 
-export const openDrawer = () => {
-    return {
-        type: CartActionTypes.OPEN_DRAWER
-    }
+export const cartActions = {
+    openDrawer: () => CartAction.open(),
+    closeDrawer: () => CartAction.close(),
+    addProduct: (product: PizzaModel) => CartAction.add(product),
+    deleteProduct: (id: string | number) => CartAction.delete(id),
+    addTotalCost: (price: number) => CartAction.addCost(price),
+    subtractTotalCost: (price: number) => CartAction.subtractCost(price)
 }
-
-export const closeDrawer = () => {
-    return {
-        type: CartActionTypes.CLOSE_DRAWER
-    }
-}
-
-export const addProduct = (product: PizzaModel) => {
-    return {
-        type: CartActionTypes.ADD_PRODUCT,
-        payload: product
-    }
-}
-
-export const deleteProduct = (id: string | number) => {
-    return {
-        type: CartActionTypes.DELETE_PRODUCT,
-        payload: id
-    }
-}
-
-export const addTotalCost = (price: number) => {
-    return {
-        type: CartActionTypes.ADD_TOTAL_COST,
-        payload: price
-    }
-}
-
-export const subtractTotalCost = (price: number) => {
-    return {
-        type: CartActionTypes.SUBTRACT_TOTAL_COST,
-        payload: price
-    }
-}
-
 
 export type CartActions = ActionsUnion<typeof CartAction>

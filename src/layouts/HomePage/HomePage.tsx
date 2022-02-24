@@ -4,10 +4,10 @@ import { CircularProgress } from '@mui/material';
 import PizzaList from '../../components/PizzaList/PizzaList';
 import { connect, InferableComponentEnhancerWithProps } from 'react-redux';
 import { DispatchThunk, RootState } from '../../store';
-import { getCurrentPizza, getFetchingPizza, onFetchPizza } from '../../store/pizza';
-import { openModal, setType } from '../../store/modal';
+import { getCurrentPizza, getFetchingPizza, pizzaActions } from '../../store/pizza';
 import { PizzaModel } from '../../api/models';
-import { setProduct } from '../../store/app';
+import { modalActions } from '../../store/modal';
+import { appActions } from '../../store/app';
 
 const styledSpinner = {
     position: 'fixed',
@@ -33,17 +33,17 @@ const Connector = connect(
     }),
     (dispatch: DispatchThunk) => ({
         fetchPizza: () => {
-            dispatch(onFetchPizza());
+            dispatch(pizzaActions.onFetchPizza());
         },
         modalOpen: () => {
-            dispatch(openModal());
+            dispatch(modalActions.openModal());
         },
         setBodyPopup: (body: string) => {
-            dispatch(setType(body));
+            dispatch(modalActions.setType(body));
         },
         setProductToPopup: (product: PizzaModel) => {
-            dispatch(setProduct(product))
-        }
+            dispatch(appActions.setProduct(product));
+        },
     })
 );
 
@@ -63,9 +63,15 @@ const HomePage: FunctionComponent = Connector((props: PropsFromRedux) => {
 
     return (
         <Container>
-            <PizzaList pizza={pizza} modalOpen={modalOpen} setBodyPopup={setBodyPopup} setProductToPopup={setProductToPopup} />
+            <PizzaList
+                pizza={pizza}
+                modalOpen={modalOpen}
+                setBodyPopup={setBodyPopup}
+                setProductToPopup={setProductToPopup}
+            />
         </Container>
     );
 });
 
+HomePage.displayName = 'HomePage';
 export default HomePage;

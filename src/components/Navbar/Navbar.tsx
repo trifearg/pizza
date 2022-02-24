@@ -1,7 +1,10 @@
-import { FunctionComponent } from 'react';
-import { AppBar, Box, Toolbar, Typography, Button, ButtonGroup } from '@mui/material';
+import { FunctionComponent, useContext } from 'react';
+import { AppBar, Box, Toolbar, Typography, Button, ButtonGroup, Badge, Switch } from '@mui/material';
 import logo from '../../assets/logo_navbar.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { PizzaModel } from '../../api/models';
+import { ColorModeContext } from '../../theme/ThemeContext';
+import styled from 'styled-components';
 
 const styleBox = {
     display: 'flex',
@@ -10,14 +13,14 @@ const styleBox = {
     padding: 5,
 };
 
-const styleAppBar = {
-    position: 'fixed',
-    left: 0,
-    margin: '0 auto',
-    bgcolor: '#ed6c02',
-    color: 'black',
-    width: 1280,
-};
+const StyledAppBar = styled(AppBar)`
+    position: fixed;
+    left: 0;
+    margin: 0 auto;
+    background-color: ${(props) => (props.theme === true ? '#121212' : '#ed6c02')};
+    color: ${(props) => (props.theme === true ? 'white' : '#121212')};
+    width: 1280px;
+`;
 
 interface IProps {
     currentCity: string;
@@ -26,6 +29,7 @@ interface IProps {
     modalOpen: () => void;
     setBodyPopup: (body: string) => void;
     cartOpen: () => void;
+    cart: PizzaModel[];
 }
 
 const Navbar: FunctionComponent<IProps> = ({
@@ -35,8 +39,10 @@ const Navbar: FunctionComponent<IProps> = ({
     modalOpen,
     setBodyPopup,
     cartOpen,
+    cart,
 }) => {
     const navigate = useNavigate();
+    const colorTheme = useContext(ColorModeContext);
 
     const transitionToAccount = () => {
         navigate('/account');
@@ -53,7 +59,7 @@ const Navbar: FunctionComponent<IProps> = ({
 
     return (
         <Box sx={styleBox}>
-            <AppBar sx={styleAppBar}>
+            <StyledAppBar theme={colorTheme.modeTheme}>
                 <Toolbar>
                     <Link to="/">
                         <img src={logo} alt="logo" width={45} />
@@ -61,12 +67,26 @@ const Navbar: FunctionComponent<IProps> = ({
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 1 }}>
                         DemoDodo
                     </Typography>
+                    <Switch checked={colorTheme.modeTheme} onChange={colorTheme.toggleColorMode} color="default" />
                     <Button color="inherit" onClick={popupCities}>
                         {currentCity}
                     </Button>
-                    <Button color="inherit" onClick={cartOpen}>
-                        Корзина
-                    </Button>
+                    <Badge
+                        badgeContent={cart.length}
+                        color="primary"
+                        sx={{
+                            '& .MuiBadge-badge': {
+                                top: 2,
+                                right: 4,
+                                background: colorTheme.modeTheme ? 'white' : 'black',
+                                color: '#ed6c02',
+                            },
+                        }}
+                    >
+                        <Button color="inherit" onClick={cartOpen}>
+                            Корзина
+                        </Button>
+                    </Badge>
                     {!currentUserIsLogin ? (
                         <Button color="inherit" onClick={transitionToLogin}>
                             Войти
@@ -82,7 +102,7 @@ const Navbar: FunctionComponent<IProps> = ({
                         </ButtonGroup>
                     )}
                 </Toolbar>
-            </AppBar>
+            </StyledAppBar>
         </Box>
     );
 };

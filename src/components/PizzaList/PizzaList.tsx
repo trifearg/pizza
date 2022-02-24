@@ -15,11 +15,7 @@ const PizzaList: FunctionComponent<IProps> = ({ pizza, modalOpen, setBodyPopup, 
             {pizza.map((item) => (
                 <PizzaCard
                     key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    photo={item.photo}
-                    description={item.description}
-                    price={item.price}
+                    {...item}
                     modalOpen={modalOpen}
                     setBodyPopup={setBodyPopup}
                     setProductToPopup={setProductToPopup}
