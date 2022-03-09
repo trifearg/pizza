@@ -38,9 +38,18 @@ const Cities: FunctionComponent<IProps> = ({ modalClose, updateCurrentCity }) =>
     };
 
     return (
-        <Box sx={{ width: 500, height: 200, margin: 5, display: 'flex', flexDirection: 'column', justifyContent: "space-between" }}>
+        <Box
+            sx={{
+                width: 500,
+                height: 200,
+                margin: 5,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+            }}
+        >
             <Input placeholder="Введите город" color="warning" sx={{ marginBottom: 5 }} onChange={searchCity} />
-            <Grid container spacing={2}>
+            <Grid container spacing={2} data-testid="grid-cities">
                 {searchResults.map((elem, index) => (
                     <Grid xs key={`city:${index}`} item>
                         <Button color="inherit" size="small" onClick={() => handleChangeCity(elem)}>
@@ -50,7 +59,9 @@ const Cities: FunctionComponent<IProps> = ({ modalClose, updateCurrentCity }) =>
                 ))}
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginLeft: 3, marginTop: 3 }} onClick={modalClose}>
-                <Button color="warning">Закрыть</Button>
+                <Button color="warning" data-testid="close-cities-selector">
+                    Закрыть
+                </Button>
             </Box>
         </Box>
     );

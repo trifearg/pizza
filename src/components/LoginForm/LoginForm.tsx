@@ -13,17 +13,23 @@ const styleButtons = {
     margin: 5,
 };
 
+const WrapperFormStyled = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+`;
+
 const FormStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 250px;
 `;
 
 const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, error }) => {
     return (
-        <>
+        <WrapperFormStyled>
             <FormStyled>
                 <TextField style={styleButtons} label="Логин" variant="outlined" color="warning" onChange={userLogin} />
                 <TextField
@@ -39,11 +45,11 @@ const LoginForm: FunctionComponent<IProps> = ({ userLogin, userPassword, logIn, 
                 </Button>
             </FormStyled>
             <Snackbar open={error ? true : false}>
-                <Alert variant="outlined" severity="error">
+                <Alert variant="outlined" severity="error" data-testid='error'>
                     {error}
                 </Alert>
-            </Snackbar> 
-        </>
+            </Snackbar>
+        </WrapperFormStyled>
     );
 };
 

@@ -7,13 +7,13 @@ export interface CartState {
     isOpen: boolean
 }
 
-const initialState: CartState = {
+export const initialStateCart: CartState = {
     cart: [],
     totalCost: 0,
     isOpen: false
 }
 
-export const cartReducer = (state = initialState, action: CartActions): CartState => {
+export const cartReducer = (state = initialStateCart, action: CartActions): CartState => {
     switch(action.type) {
         case CartActionTypes.OPEN_DRAWER: 
             return {

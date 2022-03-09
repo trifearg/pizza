@@ -19,7 +19,7 @@ const StyledAppBar = styled(AppBar)`
     margin: 0 auto;
     background-color: ${(props) => (props.theme === true ? '#121212' : '#ed6c02')};
     color: ${(props) => (props.theme === true ? 'white' : '#121212')};
-    width: 1280px;
+    max-width: 1280px;
 `;
 
 interface IProps {

@@ -5,12 +5,12 @@ export interface ModalState {
     typeModal: string
 }
 
-const initialState: ModalState = {
+export const initialStateModal: ModalState = {
     isOpen: false,
     typeModal: ""
 }
 
-export const modalReducer = (state = initialState, action: ModalActions): ModalState => {
+export const modalReducer = (state = initialStateModal, action: ModalActions): ModalState => {
     switch(action.type) {
         case ModalActionTypes.CLOSE: 
             return {

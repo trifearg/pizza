@@ -7,13 +7,13 @@ export interface PizzaState {
     fetchingPizzaError: string;
 }
 
-const initialState: PizzaState = {
+export const initialStatePizza: PizzaState = {
     pizza: [],
     fetchingPizza: false,
     fetchingPizzaError: ""
 }
 
-export const pizzaReducer = (state = initialState, action: PizzaActions): PizzaState => {
+export const pizzaReducer = (state = initialStatePizza, action: PizzaActions): PizzaState => {
     switch (action.type) {
         case PizzaActionTypes.START_FETCHING_PIZZA:
             return {

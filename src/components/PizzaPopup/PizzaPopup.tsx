@@ -100,7 +100,7 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, moda
                         <Typography variant="h6" mt={2}>
                             Добавить в пиццу
                         </Typography>
-                        <Grid container>
+                        <Grid container data-testid='grid-ingredients'>
                             {currentIngredients.map((item, index) => (
                                 <Grid item sx={{ marginTop: 1 }} key={`ingredient:${index}`} xs={4}>
                                     <Button
@@ -129,7 +129,7 @@ const PizzaPopup: FunctionComponent<IProps> = ({ product, addProductToCart, moda
                 </Stack>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: 5, marginTop: 1, marginBottom: 1 }}>
-                <Button color="warning" variant="contained" onClick={() => addProduct()}>
+                <Button color="warning" variant="contained" onClick={() => addProduct()} data-testid='add-pizza'>
                     Добавить в корзину за {currentPrice}₽
                 </Button>
             </Box>

@@ -7,14 +7,14 @@ export interface UsersState {
     fetchingUsersError: string;
 }
 
-const initialState: UsersState = {
+export const initialStateUsers: UsersState = {
     users: [],
     fetchingUsers: false,
     fetchingUsersError: '',
 };
 
 export const usersReducer = (
-  state = initialState,
+  state = initialStateUsers,
   action: usersActions.Actions
 ): UsersState => {
   switch (action.type) {

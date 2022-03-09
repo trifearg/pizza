@@ -11,37 +11,37 @@ export interface UserModel {
 export const defaultUsers: UserModel[] = [
     {   
         id: 1,
-        login: 'manager',
-        password: '1234',
-        role: UserRole.Manager,
-        name: '',
+        login: "pasha",
+        password: "qwerty",
+        role: 0,
+        name: ""
     },
     {   
         id: 2,
-        login: 'developer1',
-        password: '1111',
-        role: UserRole.Developer,
-        name: 'Mike',
+        login: "masha",
+        password: "1111",
+        role: 1,
+        name: "Masha"
     },
     {   
         id: 3,
-        login: 'tester',
-        password: 'tst123',
-        role: UserRole.Tester,
-        name: '',
+        login: "misha",
+        password: "1111qwerty",
+        role: 2,
+        name: ""
     },
     {   
         id: 4,
-        login: 'manager1',
-        password: '1234',
-        role: UserRole.Manager,
-        name: '',
+        login: "kostya",
+        password: "1234",
+        role: 0,
+        name: ""
     },
     {   
         id: 5,
-        login: 'manager2',
-        password: '1234',
-        role: UserRole.Manager,
-        name: '',
-    },
-];
+        login: "anton",
+        password: "1234",
+        role: 0,
+        name: ""
+    }
+]

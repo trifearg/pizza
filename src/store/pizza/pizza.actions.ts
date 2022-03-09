@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { PizzaModel } from "../../api/models";
-import { PizzaApi } from "../../api/rest/pizza.api";
+import PizzaApi from "../../api/rest/pizza.api";
 import { ActionsUnion, createAction } from '../actions-helpers';
 
 export enum PizzaActionTypes {
@@ -18,14 +18,12 @@ export const PizzaAction = {
 export const pizzaActions = {
     onFetchPizza: () => {
         return async (dispatch: Dispatch) => {
+            dispatch(PizzaAction.startFetchingPizza());
             try {
-                dispatch(PizzaAction.startFetchingPizza());
                 const data = await PizzaApi.getPizza();
-                setTimeout(() => {
-                    dispatch(PizzaAction.successFetchingPizza(data));
-                }, 1000);
+                dispatch(PizzaAction.successFetchingPizza(data));
             } catch(e) {
-                dispatch(PizzaAction.errorFetchingPizza("Ошибка получения данных"));
+                dispatch(PizzaAction.errorFetchingPizza("Ошибка получения данных"))
             }
         } 
     }

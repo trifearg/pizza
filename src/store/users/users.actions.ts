@@ -16,13 +16,14 @@ export const Actions = {
 
 export const Thunks = {
      onFetchUsers: () => {
-        return (dispatch: Dispatch) => {
+        return async (dispatch: Dispatch) => {
             dispatch(Actions.startFetchingUsers());
-            UsersApi.getOrCreateUsers()
-            .then((result) => {
-                dispatch(Actions.finishFetchingUsers(result));
-            })
-            .catch(error => dispatch(Actions.fetchingUsersError(error)));
+            try {
+                const data = await UsersApi.getOrCreateUsers();
+                dispatch(Actions.finishFetchingUsers(data));
+            } catch(e: any) {
+                dispatch(Actions.fetchingUsersError(e.message))
+            }
         }
     },
     onUpdateUsers: (users: UserModel[]) => {

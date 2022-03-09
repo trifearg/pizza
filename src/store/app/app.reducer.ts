@@ -9,7 +9,7 @@ export interface AppState {
     product: PizzaModel
 }
 
-const initialState: AppState = {
+export const initialStateApp: AppState = {
     city:  localStorage.getItem("currentCity") || "Москва",
     user: {
         id: 0,
@@ -31,7 +31,7 @@ const initialState: AppState = {
     }
 }
 
-export const appReducer = (state = initialState, action: AppActions): AppState => {
+export const appReducer = (state = initialStateApp, action: AppActions): AppState => {
     switch (action.type) {
         case AppActionTypes.UPDATE_CITY:
             return {
