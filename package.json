@@ -60,6 +60,7 @@
   "devDependencies": {
     "@types/bootstrap": "^5.1.9",
     "@types/redux-mock-store": "^1.0.3",
-    "@types/styled-components": "^5.1.22"
+    "@types/styled-components": "^5.1.22",
+    "@types/uuid": "^8.3.4"
   }
 }
